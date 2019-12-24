@@ -1,5 +1,5 @@
 function getGearset() {
-    let raidPieces = [], tomePieces = [], upgradeMats = {Solvent:0, Twine:0, Polish:0}, tomes = 0, food = '';
+    let raidPieces = [], tomePieces = [], upgradeMats = {Solvent:0, Twine:0, Polish:0}, tomes = 0, food = '', foodId = 0;
     let slots = [
         {name:'Weapon', upgrade:'Solvent', tomes:1000},
         {name:'Head', upgrade:'Twine', tomes:495},
@@ -17,6 +17,8 @@ function getGearset() {
     
     document.querySelectorAll('.itemName.selected').forEach(item => {
         if(item.parentElement.parentElement.querySelector(".slotName").innerText === "Food") {
+            //ugliest possible way of getting an item id lol
+            foodId = document.querySelectorAll(".itemName.selected")[12].style.backgroundImage.split("/")[document.querySelectorAll(".itemName.selected")[12].style.backgroundImage.split("/").length-1].replace(/\D/g,'')
             food = item.querySelector('.floatLeft').innerText;
             return;
         }
@@ -55,7 +57,8 @@ function getGearset() {
         tomePieces: (tomePieces.join(", ") || "(none selected"),
         upgradePieces: upgradeMatList,
         totalTomes: tomes,
-        food: (food || "(none selected)")
+        food: (food || "(none selected)"),
+        foodId: foodId
     }
     chrome.storage.local.set({gearset:gearset});
 }

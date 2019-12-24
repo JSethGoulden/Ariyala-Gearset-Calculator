@@ -3,13 +3,24 @@
     <head>
         <style>
             body {
-                width:360px;
+                width:440px;
+                font-family: Arial;
+                font-size:12px;
+                color:#ccc;
+                background-color:#1f1f1f;
             }
             div {
                 border-bottom: 2px solid black;
+                padding: 6px;
             }
             div:last-of-type {
                 border-bottom: none;
+            }
+            a:hover {
+                color:#00cc00;
+            }
+            a, a:visited {
+                color:#ccc;
             }
             .title {
                 font-weight:bold;
@@ -21,7 +32,7 @@
         <div> <span class="title"> Tome -</span> <span id="tomePieces"></span> </div>
         <div> <span class="title"> Upgrade Materials -</span><span id="upgradePieces"></span> </div>
         <div> <span class="title"> Total Tomestones - </span><span id="totalTomes"></span> </div>
-        <div> <span class="title"> Food - </span><span id="food"></span> </div>
+        <div> <span class="title"> Food - </span> <a target="_blank" href="#" id="foodUrl"><span id="food"></span></a> </div>
         <script src="popup.js"></script>
     </body>
 </html>
