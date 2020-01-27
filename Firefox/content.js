@@ -1,4 +1,5 @@
 function getGearset() {
+    //Keys in upgradeMats are upper case in order to exactly match the text of each item category
     let raidPieces = [], tomePieces = [], upgradeMats = {Solvent:0, Twine:0, Polish:0}, tomes = 0, food = '', foodId = 0;
     let slots = [
         {name:'Weapon', upgrade:'Solvent', tomes:1000},
@@ -17,7 +18,7 @@ function getGearset() {
     
     document.querySelectorAll('.itemName.selected').forEach(item => {
         if(item.parentElement.parentElement.querySelector(".slotName").innerText === "Food") {
-            //ugliest possible way of getting an item id lol
+            //Food is always the last category on Ariyala
             foodId = item.style.backgroundImage.split("/")[item.style.backgroundImage.split("/").length-1].replace(/\D/g,'')
             food = item.querySelector('.floatLeft').innerText;
             return;
@@ -25,11 +26,12 @@ function getGearset() {
         let currentSlot = slots.filter(slot => {
             return slot.name === item.parentElement.parentElement.querySelector(".slotName").innerText;
         })[0]
-        //items starting with "augmented " = tome, otherwise it's raid gear or an item below max ilvl
-        //note that this means only raid and augmented tome gear are accounted for - if any other gear (eg dungeon gear, unaugmented tome gear) is used, it is counted as raid gear
-        //this is something to work on, although it should be extremely rare for a BiS loadout to use unaugmented, non raid gear (ultimate BiS comes to mind)
+
+        //Items starting with "augmented" are treated as tome gear, while everything else is treated as raid gear.
+        //This isn't necessarily true, as it is possible (though extremely unlikely) that other items
+        //could be listed in a BiS set. Ultimate sets are an example.
         if(item.querySelector('.floatLeft').innerText.indexOf("Augmented ") !== -1) {
-            //augmented
+            //tome
             tomePieces.push(currentSlot.name);
             upgradeMats[currentSlot.upgrade] += 1;
             tomes += currentSlot.tomes;
