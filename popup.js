@@ -1,8 +1,13 @@
-chrome.storage.local.get(['gearset'], result => {
-    document.getElementById("raidPieces").innerHTML = result.gearset.raidPieces
-    document.getElementById("tomePieces").innerHTML = result.gearset.tomePieces
-    document.getElementById("upgradePieces").innerHTML = result.gearset.upgradePieces
-    document.getElementById("totalTomes").innerHTML = result.gearset.totalTomes
-    document.getElementById("food").innerHTML = result.gearset.food
-    document.getElementById("foodUrl").href = "http://garlandtools.org/db/#item/" + result.gearset.foodId
-})
+function updatePopupHtml(data) {
+    document.getElementById("raidPieces").append(document.createTextNode(data.raidPieces))
+    document.getElementById("tomePieces").append(document.createTextNode(data.tomePieces))
+    document.getElementById("upgradePieces").append(document.createTextNode(data.upgradePieces))
+    document.getElementById("totalTomes").append(document.createTextNode(data.totalTomes)) 
+    document.getElementById("food").append(document.createTextNode(data.food))
+    document.getElementById("foodUrl").href = "http://garlandtools.org/db/#item/" + data.foodId
+}
+browser.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    browser.tabs.sendMessage(tabs[0].id, {greeting: "hello"}, function(response) {
+      updatePopupHtml(response.data);
+    });
+});

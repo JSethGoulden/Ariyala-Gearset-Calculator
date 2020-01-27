@@ -18,7 +18,7 @@ function getGearset() {
     document.querySelectorAll('.itemName.selected').forEach(item => {
         if(item.parentElement.parentElement.querySelector(".slotName").innerText === "Food") {
             //ugliest possible way of getting an item id lol
-            foodId = document.querySelectorAll(".itemName.selected")[12].style.backgroundImage.split("/")[document.querySelectorAll(".itemName.selected")[12].style.backgroundImage.split("/").length-1].replace(/\D/g,'')
+            foodId = item.style.backgroundImage.split("/")[item.style.backgroundImage.split("/").length-1].replace(/\D/g,'')
             food = item.querySelector('.floatLeft').innerText;
             return;
         }
@@ -26,6 +26,8 @@ function getGearset() {
             return slot.name === item.parentElement.parentElement.querySelector(".slotName").innerText;
         })[0]
         //items starting with "augmented " = tome, otherwise it's raid gear or an item below max ilvl
+        //note that this means only raid and augmented tome gear are accounted for - if any other gear (eg dungeon gear, unaugmented tome gear) is used, it is counted as raid gear
+        //this is something to work on, although it should be extremely rare for a BiS loadout to use unaugmented, non raid gear (ultimate BiS comes to mind)
         if(item.querySelector('.floatLeft').innerText.indexOf("Augmented ") !== -1) {
             //augmented
             tomePieces.push(currentSlot.name);
@@ -60,7 +62,7 @@ function getGearset() {
         food: (food || "(none selected)"),
         foodId: foodId
     }
-    chrome.storage.local.set({gearset:gearset});
+    return gearset;
 }
 
 window.addEventListener("load", function() {
@@ -73,3 +75,9 @@ window.addEventListener("load", function() {
         }
     }
 }, false)
+
+browser.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+      if (request.greeting == "hello")
+        sendResponse({data: getGearset()});
+});

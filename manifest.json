@@ -1,31 +1,35 @@
 {
     "name": "Ariyala Gearset Calculator",
+	"manifest_version": 2,
     "version": "1.0",
     "description": "Tallies Raid and Tome equipment, calculates tomestones required for a gearset",
-    "permissions": ["storage"],
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
     "content_scripts": [
         {
-            "matches": ["https://ffxiv.ariyala.com/*"],
+            "matches": ["*://ffxiv.ariyala.com/*"],
             "js": ["content.js"],
             "run_at": "document_end",
             "all_frames": false
         }
     ],
     "page_action": {
+		"show_matches": ["*://ffxiv.ariyala.com/*"],
         "default_title": "Gearset Totals",
         "default_popup": "popup.html",
         "default_icon": {
-            "16": "images/get_started16.png",
-            "32": "images/get_started32.png",
-            "48": "images/get_started48.png",
-            "128": "images/get_started128.png"
+            "16": "images/wicky16.png",
+            "32": "images/wicky32.png",
+            "48": "images/wicky48.png",
+            "128": "images/wicky128.png"
           }
     },
     "icons": {
-        "16": "images/get_started16.png",
-        "32": "images/get_started32.png",
-        "48": "images/get_started48.png",
-        "128": "images/get_started128.png"
-     },
-    "manifest_version": 2
+        "16": "images/wicky16.png",
+        "32": "images/wicky32.png",
+        "48": "images/wicky48.png",
+        "128": "images/wicky128.png"
+     }
 }
