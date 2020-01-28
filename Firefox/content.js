@@ -2,18 +2,18 @@ function getGearset() {
     //Keys in upgradeMats are upper case in order to exactly match the text of each item category
     let raidPieces = [], tomePieces = [], upgradeMats = {Solvent:0, Twine:0, Polish:0}, tomes = 0, food = '', foodId = 0;
     let slots = [
-        {name:'Weapon', upgrade:'Solvent', tomes:1000},
-        {name:'Head', upgrade:'Twine', tomes:495},
-        {name:'Body', upgrade:'Twine', tomes:825},
-        {name:'Hands', upgrade:'Twine', tomes:495},
-        {name:'Waist', upgrade:'Polish', tomes:375},
-        {name:'Legs', upgrade:'Twine', tomes:825},
-        {name:'Feet', upgrade:'Twine', tomes:495},
-        {name:'Earrings', upgrade:'Polish', tomes:375},
-        {name:'Necklace', upgrade:'Polish', tomes:375},
-        {name:'Bracelet', upgrade:'Polish', tomes:375},
-        {name:'Ring Left', upgrade:'Polish', tomes:375},
-        {name:'Ring Right', upgrade:'Polish', tomes:375}
+        {name:'Weapon', upgrade:'Solvent', tomeCost:1000},
+        {name:'Head', upgrade:'Twine', tomeCost:495},
+        {name:'Body', upgrade:'Twine', tomeCost:825},
+        {name:'Hands', upgrade:'Twine', tomeCost:495},
+        {name:'Waist', upgrade:'Polish', tomeCost:375},
+        {name:'Legs', upgrade:'Twine', tomeCost:825},
+        {name:'Feet', upgrade:'Twine', tomeCost:495},   
+        {name:'Earrings', upgrade:'Polish', tomeCost:375},
+        {name:'Necklace', upgrade:'Polish', tomeCost:375},
+        {name:'Bracelet', upgrade:'Polish', tomeCost:375},
+        {name:'Ring Left', upgrade:'Polish', tomeCost:375},
+        {name:'Ring Right', upgrade:'Polish', tomeCost:375}
     ];
     
     document.querySelectorAll('.itemName.selected').forEach(item => {
@@ -34,7 +34,7 @@ function getGearset() {
             //tome
             tomePieces.push(currentSlot.name)
             upgradeMats[currentSlot.upgrade] += 1
-            tomes += currentSlot.tomes;
+            tomes += currentSlot.tomeCost;
         }
         else {
             //raid
