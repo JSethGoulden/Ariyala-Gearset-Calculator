@@ -20,11 +20,11 @@ function getGearset() {
         if(item.parentElement.parentElement.querySelector(".slotName").innerText === "Food") {
             //Food is always the last category on Ariyala
             foodId = item.style.backgroundImage.split("/")[item.style.backgroundImage.split("/").length-1].replace(/\D/g,'')
-            food = item.querySelector('.floatLeft').innerText;
+            food = item.querySelector('.floatLeft').innerText
             return;
         }
         let currentSlot = slots.filter(slot => {
-            return slot.name === item.parentElement.parentElement.querySelector(".slotName").innerText;
+            return slot.name === item.parentElement.parentElement.querySelector(".slotName").innerText
         })[0]
 
         //Items starting with "augmented" are treated as tome gear, while everything else is treated as raid gear.
@@ -32,29 +32,29 @@ function getGearset() {
         //could be listed in a BiS set. Ultimate sets are an example.
         if(item.querySelector('.floatLeft').innerText.indexOf("Augmented ") !== -1) {
             //tome
-            tomePieces.push(currentSlot.name);
-            upgradeMats[currentSlot.upgrade] += 1;
+            tomePieces.push(currentSlot.name)
+            upgradeMats[currentSlot.upgrade] += 1
             tomes += currentSlot.tomes;
         }
         else {
             //raid
-            raidPieces.push(currentSlot.name);
+            raidPieces.push(currentSlot.name)
         }
     });
     
-    let upgradeMatList = '';
+    let upgradeMatList = ''
     for(upgrade in upgradeMats) {
-        if(!upgradeMats[upgrade]) continue;
-        upgradeMatList += upgradeMats[upgrade] + "x " + upgrade + ", ";
+        if(!upgradeMats[upgrade]) continue
+        upgradeMatList += upgradeMats[upgrade] + "x " + upgrade + ", "
     }
     
     upgradeMatList = upgradeMatList.trim().slice(0, -1)
     
-    let msg = "Raid pieces: " + (raidPieces.join(", ") || "(none selected") + "\r\n";
-    msg += "Tome Pieces: " + (tomePieces.join(", ") || "(none selected)") + "\r\n";
-    msg += "Upgrade pieces: " + upgradeMatList + "\r\n";
-    msg += "Total tomes: " + tomes + "\r\n";
-    msg += "Food: " + (food || "(none selected)");
+    let msg = "Raid pieces: " + (raidPieces.join(", ") || "(none selected") + "\r\n"
+    msg += "Tome Pieces: " + (tomePieces.join(", ") || "(none selected)") + "\r\n"
+    msg += "Upgrade pieces: " + upgradeMatList + "\r\n"
+    msg += "Total tomes: " + tomes + "\r\n"
+    msg += "Food: " + (food || "(none selected)")
     
     let gearset = {
         raidPieces: (raidPieces.join(", ") || "(none selected"),
@@ -69,11 +69,11 @@ function getGearset() {
 
 window.addEventListener("load", function() {
     //wait for page to populate properly
-    initCheckTimer = setInterval(checkFinish, 120);
+    initCheckTimer = setInterval(checkFinish, 120)
     function checkFinish() {
         if(document.querySelectorAll(".itemName").length >= 10) {
-            clearInterval(initCheckTimer);
-            getGearset();
+            clearInterval(initCheckTimer)
+            getGearset()
         }
     }
 }, false)
@@ -81,5 +81,5 @@ window.addEventListener("load", function() {
 browser.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
       if (request.greeting == "hello")
-        sendResponse({data: getGearset()});
+        sendResponse({data: getGearset()})
 });
