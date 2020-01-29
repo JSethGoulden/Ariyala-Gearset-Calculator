@@ -1,83 +1,62 @@
-function getGearset() {
-    let raidPieces = [], tomePieces = [], upgradeMats = {Solvent:0, Twine:0, Polish:0}, tomes = 0, food = '', foodId = 0;
+const getGearset = () => {
+    //Keys in upgradeMats are upper case in order to exactly match the text of each item category
+    let raidPieces = [], tomePieces = [], upgradeMats = { Solvent: 0, Twine: 0, Polish: 0 }, tomes = 0, food = '', foodId = 0;
+    let books = { v4: 0, v3: 0, v2: 0, v1: 0 };
+
     let slots = [
-        {name:'Weapon', upgrade:'Solvent', tomes:1000},
-        {name:'Head', upgrade:'Twine', tomes:495},
-        {name:'Body', upgrade:'Twine', tomes:825},
-        {name:'Hands', upgrade:'Twine', tomes:495},
-        {name:'Waist', upgrade:'Polish', tomes:375},
-        {name:'Legs', upgrade:'Twine', tomes:825},
-        {name:'Feet', upgrade:'Twine', tomes:495},
-        {name:'Earrings', upgrade:'Polish', tomes:375},
-        {name:'Necklace', upgrade:'Polish', tomes:375},
-        {name:'Bracelet', upgrade:'Polish', tomes:375},
-        {name:'Ring Left', upgrade:'Polish', tomes:375},
-        {name:'Ring Right', upgrade:'Polish', tomes:375}
+        { name: 'Weapon', upgrade: 'Solvent', tomeCost: 1000, book: "v4", bookCost: 8 },
+        { name: 'Head', upgrade: 'Twine', tomeCost: 495, book: "v2", bookCost: 6 },
+        { name: 'Body', upgrade: 'Twine', tomeCost: 825, book: "v4", bookCost: 8 },
+        { name: 'Hands', upgrade: 'Twine', tomeCost: 495, book: "v2", bookCost: 6 },
+        { name: 'Waist', upgrade: 'Polish', tomeCost: 375, book: "v1", bookCost: 6 },
+        { name: 'Legs', upgrade: 'Twine', tomeCost: 825, book: "v3", bookCost: 8 },
+        { name: 'Feet', upgrade: 'Twine', tomeCost: 495, book: "v2", bookCost: 6 },
+        { name: 'Earrings', upgrade: 'Polish', tomeCost: 375, book: "v1", bookCost: 4 },
+        { name: 'Necklace', upgrade: 'Polish', tomeCost: 375, book: "v1", bookCost: 4 },
+        { name: 'Bracelet', upgrade: 'Polish', tomeCost: 375, book: "v1", bookCost: 4 },
+        { name: 'Ring', upgrade: 'Polish', tomeCost: 375, book: "v1", bookCost: 4 },
     ];
-    
+
     document.querySelectorAll('.itemName.selected').forEach(item => {
-        if(item.parentElement.parentElement.querySelector(".slotName").innerText === "Food") {
-            //ugliest possible way of getting an item id lol
-            foodId = item.style.backgroundImage.split("/")[item.style.backgroundImage.split("/").length-1].replace(/\D/g,'')
-            food = item.querySelector('.floatLeft').innerText;
+        if (item.parentElement.parentElement.querySelector(".slotName").innerText === "Food") {
+            //Food is always the last category on Ariyala
+            foodId = item.style.backgroundImage.split("/")[item.style.backgroundImage.split("/").length - 1].replace(/\D/g, '')
+            food = item.querySelector('.floatLeft').innerText
             return;
         }
         let currentSlot = slots.filter(slot => {
-            return slot.name === item.parentElement.parentElement.querySelector(".slotName").innerText;
+            return slot.name === item.parentElement.parentElement.querySelector(".slotName").innerText.split(' ')[0]
         })[0]
-        //items starting with "augmented " = tome, otherwise it's raid gear or an item below max ilvl
-        //note that this means only raid and augmented tome gear are accounted for - if any other gear (eg dungeon gear, unaugmented tome gear) is used, it is counted as raid gear
-        //this is something to work on, although it should be extremely rare for a BiS loadout to use unaugmented, non raid gear (ultimate BiS comes to mind)
-        if(item.querySelector('.floatLeft').innerText.indexOf("Augmented ") !== -1) {
-            //augmented
-            tomePieces.push(currentSlot.name);
-            upgradeMats[currentSlot.upgrade] += 1;
-            tomes += currentSlot.tomes;
+
+        //Items starting with "augmented" are treated as tome gear, while everything else is treated as raid gear.
+        //This isn't necessarily true, as it is possible (though extremely unlikely) that other items
+        //could be listed in a BiS set. Ultimate sets are an example.
+        if (item.querySelector('.floatLeft').innerText.indexOf("Augmented ") !== -1) {
+            //tome
+            tomePieces.push(currentSlot.name)
+            upgradeMats[currentSlot.upgrade] += 1
+            tomes += currentSlot.tomeCost;
         }
         else {
             //raid
-            raidPieces.push(currentSlot.name);
+            raidPieces.push(currentSlot.name)
+            books[currentSlot.book] += currentSlot.bookCost
         }
     });
-    
-    let upgradeMatList = '';
-    for(upgrade in upgradeMats) {
-        if(!upgradeMats[upgrade]) continue;
-        upgradeMatList += upgradeMats[upgrade] + "x " + upgrade + ", ";
-    }
-    
-    upgradeMatList = upgradeMatList.trim().slice(0, -1)
-    
-    let msg = "Raid pieces: " + (raidPieces.join(", ") || "(none selected") + "\r\n";
-    msg += "Tome Pieces: " + (tomePieces.join(", ") || "(none selected)") + "\r\n";
-    msg += "Upgrade pieces: " + upgradeMatList + "\r\n";
-    msg += "Total tomes: " + tomes + "\r\n";
-    msg += "Food: " + (food || "(none selected)");
-    
+
     let gearset = {
-        raidPieces: (raidPieces.join(", ") || "(none selected"),
-        tomePieces: (tomePieces.join(", ") || "(none selected"),
-        upgradePieces: upgradeMatList,
+        raidPieces: (raidPieces.join(", ") || ''),
+        books: JSON.stringify(books),
+        tomePieces: (tomePieces.join(", ") || ''),
+        upgradePieces: JSON.stringify(upgradeMats),
         totalTomes: tomes,
-        food: (food || "(none selected)"),
+        food: (food || ''),
         foodId: foodId
     }
     return gearset;
 }
 
-window.addEventListener("load", function() {
-    //wait for page to populate properly
-    initCheckTimer = setInterval(checkFinish, 120);
-    function checkFinish() {
-        if(document.querySelectorAll(".itemName").length >= 10) {
-            clearInterval(initCheckTimer);
-            getGearset();
-        }
-    }
-}, false)
-
-chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-      if (request.greeting == "hello")
-        sendResponse({data: getGearset()});
-});
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.greeting == "hello")
+        sendResponse({ data: getGearset() })
+})

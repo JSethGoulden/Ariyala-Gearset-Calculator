@@ -1,39 +1,16 @@
 <!DOCTYPE html>
 <html>
-    <head>
-		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-        <style>
-            body {
-                width:440px;
-                font-family: Arial;
-                font-size:12px;
-                color:#ccc;
-                background-color:#1f1f1f;
-            }
-            div {
-                border-bottom: 2px solid black;
-                padding: 6px;
-            }
-            div:last-of-type {
-                border-bottom: none;
-            }
-            a:hover {
-                color:#00cc00 !important;
-            }
-            a, a:visited {
-                color:#ccc;
-            }
-            .title {
-                font-weight:bold;
-            }
-        </style>
-    </head>
-    <body> 
-        <div> <span class="title"> Raid - </span> <span id="raidPieces"></span> </div>
-        <div> <span class="title"> Tome -</span> <span id="tomePieces"></span> </div>
-        <div> <span class="title"> Upgrade Materials -</span><span id="upgradePieces"></span> </div>
-        <div> <span class="title"> Total Tomestones - </span><span id="totalTomes"></span> </div>
-        <div> <span class="title"> Food - </span> <a target="_blank" href="#" id="foodUrl"><span id="food"></span></a> </div>
-        <script src="popup.js"></script>
-    </body>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="gear"></div>
+    <div id="clipboard"><i class="glyphicon glyphicon-file" id="clipboardIcon"></i> Copy to clipboard</div>
+    <script src="popup.js"></script>
+</body>
+
 </html>
