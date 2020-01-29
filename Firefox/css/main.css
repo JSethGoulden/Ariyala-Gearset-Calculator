@@ -1,0 +1,54 @@
+body {
+    width: 480px;
+    font-family: Arial;
+    font-size: 14px;
+    color: #ccc;
+    background-color: #1f1f1f;
+}
+
+div {
+    margin-top: 2px;
+    border-bottom: 2px solid black;
+    padding: 6px;
+}
+
+img {
+    margin-right: 6px;
+}
+
+div:first-of-type {
+    margin-top: 3px;
+}
+
+div:last-of-type {
+    border-bottom: none;
+}
+
+a {
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #00cc00 !important;
+}
+
+a, a:visited {
+    color: #ccc;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.subsection {
+    padding-left: 15px;
+}
+
+.subsection span {
+    padding-right: 12px;
+}
+
+#clipboard {
+    user-select: none;
+    cursor: pointer;
+}
